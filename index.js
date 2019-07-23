@@ -1,5 +1,5 @@
 const express = require('express');
-const winton = require('winston');
+const winston = require('winston');
 const app = express();
 
 const users = require('./routes/users');
