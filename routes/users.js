@@ -1,14 +1,15 @@
-//const auth = require('../middleware/auth');
+const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
+const Joi = require('joi');
 const config = require('config');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const {User, validate} = require('../models/users');
+const {User, validate,validateLogin} = require('../models/users');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/register', async (req, res) => {
     const { error } = validate(req.body); 
     if (error) return res.status(400).send(error.details[0].message);
   
@@ -21,6 +22,27 @@ router.post('/', async (req, res) => {
     await user.save();
   
     const token = user.generateAuthToken();
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'firstnName','lastName', 'email']));
+    res.cookie(token,{secure: true, httpOnly: true});
+    res.header('x-auth-token', token);
+    res.send(_.pick(user, ['_id', 'firstName','lastName', 'email']));    
+  });
+  router.post('/login', async (req, res) => {
+    const { error } = validateLogin(req.body); 
+    if (error) return res.status(400).send(error.details[0].message);
+  
+    let user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(400).send('Invalid email or password.');
+  
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!validPassword) return res.status(400).send('Invalid email or password.');
+  
+    const token = user.generateAuthToken();
+    res.send(token);
+  });
+  
+  router.get('/me', auth, async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    res.send(user);
   });
 module.exports = router; 
