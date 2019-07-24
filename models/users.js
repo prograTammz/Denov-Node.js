@@ -29,19 +29,63 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 1024
   },
-  isSuperAdmin: Boolean,
-  isAdmin: Boolean,
-  isOfficer: Boolean,
-  isBanker: Boolean,
-  isSaver: Boolean,
-  isLoaner: Boolean,
-  isTruckerHR: Boolean,
-  isTrucker: Boolean,
-  isInvestor: Boolean,
-  isDriver: Boolean,
-  isMiner: Boolean,
-  isSeller: Boolean,
-  isRecruiter: Boolean
+  joinDate:{
+    type:Date,
+    required: true,
+    default: Date.now
+  },
+  isSuperAdmin:{
+    type: Boolean,
+    default: false
+  },
+  isAdmin: {
+    type:Boolean,
+    default: false
+  },
+  isOfficer: {
+    type:Boolean,
+    default: false
+  },
+  isBanker: {
+    type:Boolean,
+    default: false
+  },
+  isSaver: {
+    type:Boolean,
+    default: false
+  },
+  isLoaner: {
+    type:Boolean,
+    default: false
+  },
+  isTruckerHR: {
+    type:Boolean,
+    default: false
+  },
+  isTrucker: {
+    type:Boolean,
+    default: false
+  },
+  isInvestor: {
+    type:Boolean,
+    default: false
+  },
+  isDriver: {
+    type:Boolean,
+    default: false
+  },
+  isMiner: {
+    type:Boolean,
+    default: false
+  },
+  isSeller: {
+    type:Boolean,
+    default: false
+  },
+  isRecruiter: {
+    type:Boolean,
+    default: false
+  }
 });
 
 userSchema.methods.generateAuthToken = function() { 
@@ -67,7 +111,7 @@ userSchema.methods.generateAuthToken = function() {
 
 const User = mongoose.model('User', userSchema);
 
-function validateUser(user) {
+function validateRegister(user) {
   const schema = {
     firstName: Joi.string().min(5).max(50).required(),
     lastName: Joi.string().min(5).max(50).required(),
@@ -87,5 +131,5 @@ function validateLogin(req) {
 }
 
 exports.User = User; 
-exports.validate = validateUser;
+exports.validateRegister = validateUser;
 exports.validateLogin = validateLogin;
