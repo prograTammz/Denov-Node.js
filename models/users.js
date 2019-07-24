@@ -131,5 +131,5 @@ function validateLogin(req) {
 }
 
 exports.User = User; 
-exports.validateRegister = validateUser;
+exports.validateRegister = validateRegister;
 exports.validateLogin = validateLogin;
