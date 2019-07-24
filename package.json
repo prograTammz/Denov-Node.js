@@ -19,6 +19,7 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "config": "^3.2.2",
+    "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
     "fawn": "^2.1.5",
     "joi": "^14.3.1",
