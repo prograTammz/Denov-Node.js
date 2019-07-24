@@ -34,6 +34,13 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: Date.now
   },
+  dBalance:{
+    type:Number,
+    default: 0
+  },
+  mainAccount:{
+    type: mongoose.Schema.Types.ObjectId
+  },
   isSuperAdmin:{
     type: Boolean,
     default: false
