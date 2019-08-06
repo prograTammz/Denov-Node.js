@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
     const token = user.generateAuthToken();
     res.cookie('token',token,{expires: new Date(Date.now() + 60*60*48*1000), httpOnly: false, secure: false });
     res.header('x-auth-token', token);
-    res.send({message:"Registeration sucessed.",user:_.pick(user, ['_id', 'firstName','lastName', 'email','phoneNumber'])});    
+    res.send(_.pick(user, ['_id', 'firstName','lastName', 'email','phoneNumber']));    
   });
   //getting user data by decrypting the token
   router.get('/', auth, async (req, res) => {
