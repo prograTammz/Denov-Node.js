@@ -15,8 +15,10 @@ router.post('/', cors, async (req, res) => {
     if (!validPassword) return res.status(400).send('Invalid email or password.');
     
     const token = user.generateAuthToken();
-    user = await _.pick(user,['isAdmin','isSuperAdmin','phoneNumber','email','firstName','lastName']);
-    res.send({user: user,token:token,message:"Logged in successfuly."});
+    user = await _.pick(user,['id','isAdmin','isSuperAdmin','phoneNumber','email','firstName','lastName']);
+    const tokenObj = {token: token}
+    user = await _.merge(user, tokenObj)
+    res.send({user: user,message:"Logged in successfuly."});
 
     
 });
