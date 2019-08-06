@@ -6,7 +6,9 @@ const auth = require('../routes/auth');
 const bank = require('../routes/bank');
 
 function Route(app){
-    app.use(express.json());
+    app.use(express.json({
+        type: ['application/json', 'text/plain']
+      }));
     app.use(cookieParser());
     app.use('/api/users', users);
     app.use('/api/auth',auth);
