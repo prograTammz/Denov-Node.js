@@ -28,7 +28,7 @@ router.post('/',auth, async (req,res)=>{
 })
 router.get('/count',async(req,res)=>{
     News.estimatedDocumentCount().exec().then((count)=>{
-        res.send({count});
+        res.json(count);
     }).catch((err)=>{
         res.status(400).send(err);
     })
