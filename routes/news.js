@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {News, validate} = require('../models/news');
+const {User} = require('../models/users');
 const auth = require('../middleware/auth');
 const _ = require('lodash');
 
@@ -14,10 +15,11 @@ router.post('/',auth, async (req,res)=>{
     }else{
         return res.status(401).send("Access denied, Not authorized");
     }
+    const user = await User.findById(req.user._id);
     let news = new News({
         title: req.body.title,
         body: req.body.body,
-        author: `${req.user.firstName} ${req.user.lastName}` 
+        author: `${user.firstName} ${user.lastName}` 
     });
     news.save().then((news)=>{
         res.send(news);
