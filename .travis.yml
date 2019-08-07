@@ -1,9 +1,17 @@
 language: node_js
 node_js: 
   - "stable"
+
+branches:
+  only:
+    - master
+
 cache:
   directories:
     - "node_modules"
+    
+script:
+- echo "skipping tests"
 
 deploy:
   skip-cleanup: true
