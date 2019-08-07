@@ -18,6 +18,7 @@ router.post('/', cors, async (req, res) => {
     user = await _.pick(user,['id','isAdmin','isSuperAdmin','phoneNumber','email','firstName','lastName']);
     const tokenObj = {token: token}
     user = await _.merge(user, tokenObj)
+    res.cookie('token',token,{expires: new Date(Date.now() + 60*60*48*1000), httpOnly: false, secure: false });
     res.send({user: user,message:"Logged in successfuly."});
 
     
