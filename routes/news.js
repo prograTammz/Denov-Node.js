@@ -24,5 +24,12 @@ router.post('/',auth, async (req,res)=>{
     })
 
 })
+router.get('/count',async(req,res)=>{
+    News.estimatedDocumentCount().exec().then((count)=>{
+        res.send({count});
+    }).catch((err)=>{
+        res.status(400).send(err);
+    })
+})
 
 module.exports = router;
