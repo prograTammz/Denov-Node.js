@@ -9,7 +9,9 @@ branches:
 cache:
   directories:
     - "node_modules"
-    
+
+dist: xenial
+
 script:
 - echo "skipping tests"
 
