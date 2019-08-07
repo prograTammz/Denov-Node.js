@@ -31,5 +31,20 @@ router.get('/count',async(req,res)=>{
         res.status(400).send(err);
     })
 })
-
+router.get('/',async(req,res)=>{
+    let pageNo = parseInt(req.query.pageNo)
+    let size = parseInt(req.query.size)
+    let query = {}
+    if(pageNo < 0 || pageNo === 0) {
+        response = {"error" : true,"message" : "invalid page number, should start with 1"};
+        return res.json(response)
+    }
+    query.skip = size * (pageNo - 1)
+    query.limit = size
+    News.find({},'title body date -_id',query).then((result)=>{
+        res.send(result);
+    }).catch((err)=>{
+        res.status(400).send(err);
+    })
+})
 module.exports = router;
