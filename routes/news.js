@@ -41,9 +41,10 @@ router.get('/',async(req,res)=>{
         response = {"error" : true,"message" : "invalid page number, should start with 1"};
         return res.json(response)
     }
-    query.skip = size * (pageNo - 1)
-    query.limit = size
-    News.find({},'title body date -_id',query).then((result)=>{
+    query.skip = size * (pageNo - 1);
+    query.limit = size;
+    query.sort = { date: -1};;
+    News.find({},'title body date author -_id',query).then((result)=>{
         res.send(result);
     }).catch((err)=>{
         res.status(400).send(err);
