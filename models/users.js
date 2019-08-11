@@ -47,6 +47,11 @@ const userSchema = new mongoose.Schema({
     min: 4,
     max: 20
   },
+  isVerified:{
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   isSuperAdmin:{
     type: Boolean,
     default: false
