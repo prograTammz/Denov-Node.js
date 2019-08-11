@@ -1,13 +1,23 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../../middleware/auth');
+const admin = require('../../middleware/admin');
+const validObjectId = require('../../middleware/validObjectId');
 const {Fees,validate} = require('../../models/fees');
 const _ = require('lodash');
 
 router.get('/',(req,res)=>{
-
+    Fees.find().sort('cost').exec()
+    .then((data)=>{
+        res.send(data);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
+    
 });
 
-router.post('/',(req,res)=>{
+router.post('/',[auth,admin],(req,res)=>{
     const {error} = validate(req.body);
     if(error){
         return res.status(400).send(error.details[0].message);
@@ -21,7 +31,7 @@ router.post('/',(req,res)=>{
         res.send(data);
     })
 })
-router.put('/:id',(req,res)=>{
+router.put('/:id',validObjectId,(req,res)=>{
     const {error} = validate(req.body);
     if(error){
         return res.status(400).send(error.details[0].message);
