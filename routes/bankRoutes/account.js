@@ -5,6 +5,7 @@ const isBanker = require('../../middleware/banker');
 const isAdmin = require('../../middleware/admin');
 const {Account,validateAccount} = require('../../models/account');
 const {Plan, validatePlan} = require('../../models/bankPlan');
+const validObjectId = require('../../middleware/validObjectId');
 
 router.get('/',auth,(req,res)=>{
     Account.find({ denovId: req.user.id }).sort('creationDate')
@@ -15,7 +16,7 @@ router.get('/',auth,(req,res)=>{
         res.status(400).send(err);
     });
 });
-router.get('/:id',(req,res)=>{
+router.get('/:id',validObjectId,(req,res)=>{
     Account.find({ denovId: req.user.id, _id: req.params.id }).sort('creationDate')
     .then((data)=>{
         res.send(data);
@@ -44,7 +45,7 @@ router.get('/pending',[auth,isBanker],(req,res)=>{
         res.status(400).send(err);
     });
 });
-router.put('/handle/:id',[auth,isBanker],(req,res)=>{
+router.put('/handle/:id',[validObjectId,auth,isBanker],(req,res)=>{
     Account.findByIdAndUpdate(req.params.id,{ status:"created" })
     .then((data)=>{
         res.send();
@@ -53,7 +54,7 @@ router.put('/handle/:id',[auth,isBanker],(req,res)=>{
         res.status(400).send(err);
     });
 });
-router.delete('/close/:id',[auth,isBanker],(req,res)=>{
+router.delete('/close/:id',[validObjectId,auth,isBanker],(req,res)=>{
     Account.findByIdAndRemove(req.params.id)
     .then((data)=>{
         res.send();
