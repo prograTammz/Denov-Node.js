@@ -15,7 +15,13 @@ router.get('/',auth,(req,res)=>{
     });
 });
 router.get('/:id',(req,res)=>{
-
+    Account.find({ denovId: req.user.id, _id: req.params.id }).sort('creationDate')
+    .then((data)=>{
+        res.send(data);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    });
 });
 //admin only routes
 router.get('/all',[auth,isAdmin],(req,res)=>{
@@ -29,7 +35,7 @@ router.get('/all',[auth,isAdmin],(req,res)=>{
 });
 //banker task routes
 router.get('/pending',[auth,isBanker],(req,res)=>{
-
+    
 });
 router.put('/handle/:id',[auth,isBanker],(req,res)=>{
     
