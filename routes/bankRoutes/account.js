@@ -6,8 +6,13 @@ const isAdmin = require('../../middleware/admin');
 const {Account,validateAccount} = require('../../models/account');
 
 router.get('/',auth,(req,res)=>{
-    
-
+    Account.find({ denovId: req.user.id }).sort('creationDate')
+    .then((data)=>{
+        res.send(data);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    });
 });
 router.get('/:id',(req,res)=>{
 
