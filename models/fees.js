@@ -36,5 +36,5 @@ function validateFees(fees) {
     return Joi.validate(fees, schema);
   }
   
-  exports.fees = fees; 
+  exports.Fees = fees; 
   exports.validate = validateFees;
