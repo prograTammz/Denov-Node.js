@@ -35,10 +35,22 @@ router.get('/all',[auth,isAdmin],(req,res)=>{
 });
 //banker task routes
 router.get('/pending',[auth,isBanker],(req,res)=>{
-    
+    Account.find({ status:"pending" }).sort('creationDate')
+    .then((data)=>{
+        res.send(data);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    });
 });
 router.put('/handle/:id',[auth,isBanker],(req,res)=>{
-    
+    Account.findByIdAndUpdate(req.params.id,{ status:"created" })
+    .then((data)=>{
+        res.send();
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    });
 });
 router.delete('/close/:id',[auth,isBanker],(req,res)=>{
 
