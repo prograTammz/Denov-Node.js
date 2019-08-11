@@ -21,9 +21,18 @@ router.post('/',(req,res)=>{
         res.send(data);
     })
 })
-router.put('/',(req,res)=>{
-
-})
+router.put('/:id',(req,res)=>{
+    const {error} = validate(req.body);
+    if(error){
+        return res.status(400).send(error.details[0].message);
+    }
+    Fees.findByIdAndUpdate(req.params.id,req.body,(err,data)=>{
+        if(err){
+            res.status(400).send(err.details[0].message);
+        }
+        res.send();
+    })
+})  
 
 module.exports = router;
 
