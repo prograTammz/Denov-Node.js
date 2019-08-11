@@ -77,5 +77,5 @@ function validateAccount(account) {
     return Joi.validate(account, schema);
   }
   
-  exports.account = account; 
-  exports.validate = validateAccount;
+  exports.Account = Account; 
+  exports.validateAccount = validateAccount;
