@@ -53,7 +53,13 @@ router.put('/handle/:id',[auth,isBanker],(req,res)=>{
     });
 });
 router.delete('/close/:id',[auth,isBanker],(req,res)=>{
-
+    Account.findByIdAndRemove(req.params.id)
+    .then((data)=>{
+        res.send();
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    });
 });
 //for logged user
 router.post('/',auth,(req,res)=>{
