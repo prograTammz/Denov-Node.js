@@ -9,6 +9,6 @@ const fee = require('./bankRoutes/fee');
 router.use('/account',account);
 router.use('/wiretransfer',wiretransfer);
 router.use('/loan',loan);
-router.use('fee',fee);
+router.use('/fee',fee);
 
 module.exports = router;
