@@ -4,6 +4,7 @@ const auth = require('../../middleware/auth');
 const isBanker = require('../../middleware/banker');
 const isAdmin = require('../../middleware/admin');
 const {Account,validateAccount} = require('../../models/account');
+const {Plan, validatePlan} = require('../../models/bankPlan');
 
 router.get('/',auth,(req,res)=>{
     Account.find({ denovId: req.user.id }).sort('creationDate')
@@ -63,6 +64,29 @@ router.delete('/close/:id',[auth,isBanker],(req,res)=>{
 });
 //for logged user
 router.post('/',auth,(req,res)=>{
-
+    const {error} = validateAccount(req.body);
+    if(error){
+        return res.status(400).send(error.details[0].message);
+    }
+    const plan = await Plan.find({_id: req.body.planId});
+    const account = new Account({
+        isMain: req.body.isMain,
+        principle: req.body.principle,
+        currentBalance: req.body.principle,
+        planId: req.body.planId,
+        denovId: req.user.id,
+        bonus: plan.bonus,
+        allowanceDays: plan.allowanceDays,
+        updateDays: plan.updateDays,
+        breakFees: plan.breakFees,
+        deduceRate: plan.deduceRate,
+        interest: plan.interest
+    })
+    account.save().then((data)=>{
+        res.send(data);
+    })
+    .catch((err)=>{
+        res.send(err);
+    })
 });
 module.exports = router;
