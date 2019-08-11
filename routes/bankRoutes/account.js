@@ -3,8 +3,10 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const isBanker = require('../../middleware/banker');
 const isAdmin = require('../../middleware/admin');
+const {Account,validateAccount} = require('../../models/account');
 
 router.get('/',auth,(req,res)=>{
+    
 
 });
 router.get('/:id',(req,res)=>{
@@ -12,6 +14,13 @@ router.get('/:id',(req,res)=>{
 });
 //admin only routes
 router.get('/all',[auth,isAdmin],(req,res)=>{
+        Account.find().sort('creationDate')
+        .then((data)=>{
+            res.send(data);
+        })
+        .catch((err)=>{
+            res.status(400).send(err);
+        })
 });
 //banker task routes
 router.get('/pending',[auth,isBanker],(req,res)=>{
