@@ -7,4 +7,4 @@ router.get('/',(res,req)=>{
 router.post('/',(req,res)=>{
 
 })
-module.exports = route
+module.exports = router;

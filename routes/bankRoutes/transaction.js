@@ -25,4 +25,4 @@ router.put('/verify',(req,res)=>{
 })
 
 
-module.exports = route
+module.exports = router;
