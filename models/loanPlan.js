@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const Item =mongoose.model('Item', new mongoose.Schema({
+const LoanPlan =mongoose.model('loanPlan', new mongoose.Schema({
     type:{
         type: String,
         required: true,
@@ -25,7 +25,7 @@ const Item =mongoose.model('Item', new mongoose.Schema({
 
 }));
 
-function validateItem(item) {
+function validateLoanPlan(LoanPlan) {
     const schema = {
         type: Joi.string().required(),
         interestDaily: Joi.number().required(),
@@ -34,8 +34,8 @@ function validateItem(item) {
         maximum: Joi.number().required()
     };
   
-    return Joi.validate(item, schema);
+    return Joi.validate(LoanPlan, schema);
   }
   
-  exports.Item = Item; 
-  exports.validate = validateItem;
+  exports.LoanPlan = LoanPlan; 
+  exports.validate = validateLoanPlan;

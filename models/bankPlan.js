@@ -54,5 +54,5 @@ function validateBankPlan(bankPlan) {
     return Joi.validate(bankPlan, schema);
   }
   
-  exports.bankPlan = bankPlan; 
+  exports.BankPlan = bankPlan; 
   exports.validate = validateBankPlan;
