@@ -8,7 +8,7 @@ const {BankPlan, validatePlan} = require('../../models/bankPlan');
 const validObjectId = require('../../middleware/validObjectId');
 
 router.get('/',auth,(req,res)=>{
-    Account.find({ denovId: req.user.id }).sort('creationDate')
+    Account.find({ denovId: req.user._id }).sort('creationDate')
     .then((data)=>{
         res.send(data);
     })
@@ -84,7 +84,6 @@ router.post('/',auth,(req,res)=>{
             deduceRate: plan.deduceRate,
             interest: plan.interest
         })
-        console.log(account);
         account.save().then((data)=>{
             res.send(data);
         })
