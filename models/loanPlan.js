@@ -38,4 +38,4 @@ function validateLoanPlan(LoanPlan) {
   }
   
   exports.LoanPlan = LoanPlan; 
-  exports.validate = validateLoanPlan;
+  exports.validateLoanPlan = validateLoanPlan;

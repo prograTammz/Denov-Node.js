@@ -55,4 +55,4 @@ function validateBankPlan(bankPlan) {
   }
   
   exports.BankPlan = bankPlan; 
-  exports.validate = validateBankPlan;
+  exports.validateBankPlan = validateBankPlan;
