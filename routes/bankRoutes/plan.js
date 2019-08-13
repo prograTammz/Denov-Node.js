@@ -30,7 +30,7 @@ router.get('/saving/:id',(req,res)=>{
     })
 })
 router.post('/saving',(req,res)=>{
-    const {error} = validateSaving(req.body);
+    const {error} = validateBankPlan(req.body);
     if(error){
         res.status(400).send(error);
     }
