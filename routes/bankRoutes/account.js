@@ -69,7 +69,14 @@ router.post('/',auth,(req,res)=>{
     if(error){
         return res.status(400).send(error.details[0].message);
     }
-    const plan = await Plan.find({_id: req.body.planId});
+    let plan;
+    Plan.find({_id: req.body.planId})
+    .then((data)=>{
+        plan = data;
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
     const account = new Account({
         isMain: req.body.isMain,
         principle: req.body.principle,
