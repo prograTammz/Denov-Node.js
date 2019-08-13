@@ -1,4 +1,5 @@
-const Joi = require('joi');
+let Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 const Account =mongoose.model('account', new mongoose.Schema({
     isMain:{
@@ -70,7 +71,7 @@ const Account =mongoose.model('account', new mongoose.Schema({
 function validateAccount(account) {
     const schema = {
         principle: Joi.number().min(5000).required(),
-        planId: Joi.ObjectId().required(),
+        planId: Joi.objectId().required(),
         isMain: Joi.boolean().required()
     };
   
