@@ -4,7 +4,7 @@ const auth = require('../../middleware/auth');
 const isBanker = require('../../middleware/banker');
 const isAdmin = require('../../middleware/admin');
 const {Account,validateAccount} = require('../../models/account');
-const {Plan, validatePlan} = require('../../models/bankPlan');
+const {BankPlan, validatePlan} = require('../../models/bankPlan');
 const validObjectId = require('../../middleware/validObjectId');
 
 router.get('/',auth,(req,res)=>{
@@ -69,32 +69,32 @@ router.post('/',auth,(req,res)=>{
     if(error){
         return res.status(400).send(error.details[0].message);
     }
-    let plan;
-    Plan.find({_id: req.body.planId})
-    .then((data)=>{
-        plan = data;
+    BankPlan.findOne({_id: req.body.planId})
+    .then((plan)=>{
+        const account = new Account({
+            isMain: req.body.isMain,
+            principle: req.body.principle,
+            currentBalance: req.body.principle,
+            planId: req.body.planId,
+            denovId: req.user._id,
+            bonus: plan.bonus,
+            allowanceDays: plan.allowance,
+            updateDays: plan.updateDays,
+            breakFees: plan.breakFees,
+            deduceRate: plan.deduceRate,
+            interest: plan.interest
+        })
+        console.log(account);
+        account.save().then((data)=>{
+            res.send(data);
+        })
+        .catch((err)=>{
+            res.send(err.message);
+        })
     })
     .catch((err)=>{
         res.status(400).send(err);
     })
-    const account = new Account({
-        isMain: req.body.isMain,
-        principle: req.body.principle,
-        currentBalance: req.body.principle,
-        planId: req.body.planId,
-        denovId: req.user.id,
-        bonus: plan.bonus,
-        allowanceDays: plan.allowanceDays,
-        updateDays: plan.updateDays,
-        breakFees: plan.breakFees,
-        deduceRate: plan.deduceRate,
-        interest: plan.interest
-    })
-    account.save().then((data)=>{
-        res.send(data);
-    })
-    .catch((err)=>{
-        res.send(err);
-    })
+    
 });
 module.exports = router;
