@@ -5,10 +5,12 @@ const account = require('./bankRoutes/account');
 const wiretransfer = require('./bankRoutes/wiretransfer');
 const loan = require('./bankRoutes/loan');
 const fee = require('./bankRoutes/fee');
+const plan = require('./bankRoutes/plan');
 
 router.use('/account',account);
 router.use('/wiretransfer',wiretransfer);
 router.use('/loan',loan);
 router.use('/fee',fee);
+router.use('/plan',plan)
 
 module.exports = router;
