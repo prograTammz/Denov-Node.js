@@ -1,14 +1,44 @@
 const express = require('express');
 const router = express.Router();
 const {BankPlan,validateBankPlan} = require('../../models/bankPlan');
+const {LoanPlan, validateLoanPlan} = require('../../models/loanPlan');
 router.get('/loan',(req,res)=>{
-
+    LoanPlan.find().sort()
+    .then((data)=>{
+        res.send(data);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
 })
 router.get('/loan/:id',(req,res)=>{
-
+    LoanPlan.findById(req.params.id)
+    .then((data)=>{
+        res.send(data);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
 })
 router.post('/loan',(req,res)=>{
-
+    const {error} = validateLoanPlan(req.body);
+    if(error){
+        res.status(400).send(error);
+    }
+    const plan = new LoanPlan({
+        type: req.body.type,
+        interestDaily: req.body.interestDaily,
+        interestWeekly: req.body.interestWeekly,
+        minimum: req.body.minimum,
+        maximum: req.body.maximum
+    })
+    plan.save()
+    .then((data)=>{
+        res.send(data);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
 })
 
 router.get('/saving',(req,res)=>{
