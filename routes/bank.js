@@ -7,12 +7,14 @@ const loan = require('./bankRoutes/loan');
 const fee = require('./bankRoutes/fee');
 const plan = require('./bankRoutes/plan');
 const transaction = require('./bankRoutes/transaction');
+const earnings = require('./bankRoutes/earnings');
 
 router.use('/account',account);
 router.use('/wiretransfer',wiretransfer);
 router.use('/loan',loan);
 router.use('/fee',fee);
-router.use('/plan',plan)
-router.use('/transaction',transaction)
+router.use('/plan',plan);
+router.use('/transaction',transaction);
+router.use('/earnings',earnings);
 
 module.exports = router;
