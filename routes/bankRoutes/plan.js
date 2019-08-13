@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const {BankPlan,validateBankPlan} = require('../../models/bankPlan');
 const {LoanPlan, validateLoanPlan} = require('../../models/loanPlan');
+const auth = require('../../middleware/auth');
+const admin = require('../../middleware/admin');
+const validObjectId = require('../../middleware/validObjectId');
 router.get('/loan',(req,res)=>{
     LoanPlan.find().sort()
     .then((data)=>{
@@ -11,7 +14,7 @@ router.get('/loan',(req,res)=>{
         res.status(400).send(err);
     })
 })
-router.get('/loan/:id',(req,res)=>{
+router.get('/loan/:id',validObjectId,(req,res)=>{
     LoanPlan.findById(req.params.id)
     .then((data)=>{
         res.send(data);
@@ -20,7 +23,7 @@ router.get('/loan/:id',(req,res)=>{
         res.status(400).send(err);
     })
 })
-router.post('/loan',(req,res)=>{
+router.post('/loan',[auth,admin],(req,res)=>{
     const {error} = validateLoanPlan(req.body);
     if(error){
         res.status(400).send(error);
@@ -50,7 +53,7 @@ router.get('/saving',(req,res)=>{
         res.status(400).send(err);
     })
 })
-router.get('/saving/:id',(req,res)=>{
+router.get('/saving/:id',validObjectId,(req,res)=>{
     BankPlan.findById(req.params.id)
     .then((data)=>{
         res.send(data);
@@ -59,7 +62,7 @@ router.get('/saving/:id',(req,res)=>{
         res.status(400).send(err);
     })
 })
-router.post('/saving',(req,res)=>{
+router.post('/saving',[auth,admin],(req,res)=>{
     const {error} = validateBankPlan(req.body);
     if(error){
         res.status(400).send(error);
