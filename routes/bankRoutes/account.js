@@ -16,8 +16,8 @@ router.get('/',auth,(req,res)=>{
         res.status(400).send(err);
     });
 });
-router.get('/:id',validObjectId,(req,res)=>{
-    Account.find({ denovId: req.user.id, _id: req.params.id }).sort('creationDate')
+router.get('/:id',[validObjectId,auth],(req,res)=>{
+    Account.find({ denovId: req.user._id, _id: req.params.id }).sort('creationDate')
     .then((data)=>{
         res.send(data);
     })
