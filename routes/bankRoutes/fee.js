@@ -31,7 +31,7 @@ router.post('/',[auth,admin],(req,res)=>{
         res.send(data);
     })
 })
-router.put('/:id',validObjectId,(req,res)=>{
+router.put('/:id',[validObjectId,auth,admin],(req,res)=>{
     const {error} = validate(req.body);
     if(error){
         return res.status(400).send(error.details[0].message);
