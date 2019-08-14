@@ -29,7 +29,7 @@ const wiretransfer =mongoose.model('wiretransfer', new mongoose.Schema({
         default: Date.now()
     },
     accountId:{
-        type: mongoose.Types.objectId,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     }
 }));
@@ -45,5 +45,5 @@ function validateWireTransfer(wiretransfer) {
     return Joi.validate(wiretransfer, schema);
   }
   
-  exports.wiretransfer = wiretransfer; 
-  exports.validate = validateWireTransfer;
+  exports.Wiretransfer = wiretransfer; 
+  exports.validateWiretransfer = validateWireTransfer;
