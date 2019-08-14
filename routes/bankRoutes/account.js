@@ -67,8 +67,17 @@ router.put('/handle/:id',[validObjectId,auth,isBanker],(req,res)=>{
 });
 router.delete('/close/:id',[validObjectId,auth,isBanker],(req,res)=>{
     Account.findByIdAndRemove(req.params.id)
-    .then((data)=>{
-        res.send();
+    .then((account)=>{
+        return Account.findOne({denovId: account.denovId}).count()
+            .then((count)=>{
+                if(count === 0){
+                    return User.findByIdAndUpdate(account.denovId,{isSaver: "false"});
+                }
+                res.send();
+            })
+    })
+    .then(()=>{
+        res.send()
     })
     .catch((err)=>{
         res.status(400).send(err);
