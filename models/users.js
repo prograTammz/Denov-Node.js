@@ -122,7 +122,11 @@ userSchema.methods.generateAuthToken = function() {
         isDriver: this.isDriver,
         isMiner: this.isMiner,
         isSeller: this.isSeller,
-        isRecruiter: this.isRecruiter
+        isRecruiter: this.isRecruiter,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        phoneNumber: this.phoneNumber,
+        email: this.email
       }, process.env.API_KEY);
     return token;
   }
