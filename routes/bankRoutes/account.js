@@ -56,7 +56,7 @@ router.put('/handle/:id',[validObjectId,auth,isBanker],(req,res)=>{
        return  _.sumBy(fees,'cost');
     }).then((fees)=>{
         const earnings = new Earning({
-            source:"Banking fees",
+            source:"Banking account creation fees",
             cost: fees
         });
         earnings.save()
