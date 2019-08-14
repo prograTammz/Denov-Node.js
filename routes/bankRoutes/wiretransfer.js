@@ -4,6 +4,21 @@ const {Wiretransfer,validateWiretransfer} = require('../../models/wiretranfser')
 const {User} = require('../../models/users');
 const {Account,validateAccount} = require('../../models/account');
 const auth = require('../../middleware/auth');
+const _ = require('lodash');
+router.get('/',auth,(req,res)=>{
+    let wiretranfsers= {};
+    wiretranfsers.recieved = Wiretransfer.find({recieverFirst: req.user.firstName, recieverLast: req.user.lastName})
+    .then((wiretranfser)=>{
+        return wiretranfser;
+    })
+    wiretranfsers.sent = Wiretransfer.find({senderFirst: req.user.firstName, senderLast: req.user.lastName})
+        .then((wiretranfsers)=>{
+            return wiretranfsers
+        })
+    Promise.all([wiretranfsers.recieved,wiretranfsers.sent]).then((vals)=>{
+        res.send({recieved: vals[0], sent: vals[1]});
+    })
+})
 router.post('/',auth,(req,res)=>{
     const {error} = validateWiretransfer(req.body);
     if(error){
