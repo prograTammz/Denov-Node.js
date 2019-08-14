@@ -62,6 +62,10 @@ const Account =mongoose.model('account', new mongoose.Schema({
     interest:{
         type: Number,
         required: true,
+    },
+    lowestBalance:{
+        type: Number,
+        required: true
     }
 
 
