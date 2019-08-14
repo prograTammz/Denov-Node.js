@@ -25,5 +25,5 @@ function validateEarning(earning) {
     return Joi.validate(earning, schema);
   }
   
-  exports.earning = earning; 
+  exports.Earning = earning; 
   exports.validate = validateEarning;
