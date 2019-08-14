@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
-const types = ['transaction','account','eservice','investment','breaking'];
+const types = ['transaction','account','eservice','investment','breaking','wiretransfer'];
 
 const fees =mongoose.model('fees', new mongoose.Schema({
     name:{
