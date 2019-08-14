@@ -9,6 +9,7 @@ const {BankPlan, validatePlan} = require('../../models/bankPlan');
 const validObjectId = require('../../middleware/validObjectId');
 const {Fees} = require('../../models/fees');
 const {User} = require('../../models/users');
+const {Earning} = require('../../models/earnings');
 //admin only routes
 router.get('/all',[auth,isAdmin],(req,res)=>{
     Account.find().sort('creationDate')
@@ -54,6 +55,11 @@ router.put('/handle/:id',[validObjectId,auth,isBanker],(req,res)=>{
     .then((fees)=>{
        return  _.sumBy(fees,'cost');
     }).then((fees)=>{
+        const earnings = new Earning({
+            source:"Banking fees",
+            cost: fees
+        });
+        earnings.save()
         return Account.findByIdAndUpdate(req.params.id,{ status:"created", lastUpdated: Date.now(), "$inc": {"currentBalance": -fees , "principle": -fees, "lowestBalance": -fees} })
     }).then((account)=>{
         return User.findByIdAndUpdate(account.denovId,{isSaver: "true"})
