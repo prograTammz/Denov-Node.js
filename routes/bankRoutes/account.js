@@ -8,6 +8,7 @@ const {Account,validateAccount} = require('../../models/account');
 const {BankPlan, validatePlan} = require('../../models/bankPlan');
 const validObjectId = require('../../middleware/validObjectId');
 const {Fees} = require('../../models/fees');
+const {User} = require('../../models/users');
 //admin only routes
 router.get('/all',[auth,isAdmin],(req,res)=>{
     Account.find().sort('creationDate')
@@ -50,12 +51,14 @@ router.get('/:id',[validObjectId,auth],(req,res)=>{
 router.put('/handle/:id',[validObjectId,auth,isBanker],(req,res)=>{
     
     Fees.find({type: {$in: ["account","transaction","eservice"]}})
-    .then((data)=>{
-       const fees =  _.sumBy(data,'cost');
-       Account.findByIdAndUpdate(req.params.id,{ status:"created", lastUpdated: Date.now(), "$inc": {"currentBalance": -fees , "principle": -fees, "lowestBalance": -fees} })
-        .then((data)=>{
-            res.send();
-        })
+    .then((fees)=>{
+       return  _.sumBy(fees,'cost');
+    }).then((fees)=>{
+        return Account.findByIdAndUpdate(req.params.id,{ status:"created", lastUpdated: Date.now(), "$inc": {"currentBalance": -fees , "principle": -fees, "lowestBalance": -fees} })
+    }).then((account)=>{
+        return User.findByIdAndUpdate(account.denovId,{isSaver: "true"})
+    }).then(()=>{
+        res.send();
     })
     .catch((err)=>{
         res.status(400).send(err);
