@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const {Wiretransfer,validateWiretransfer} = require('../../models/wiretranfser');
+const {Fees} = require('../../models/fees');
 const {User} = require('../../models/users');
+const {Earning} = require('../../models/earnings');
 const {Account,validateAccount} = require('../../models/account');
 const auth = require('../../middleware/auth');
 const _ = require('lodash');
@@ -44,7 +46,16 @@ router.post('/',auth,(req,res)=>{
         return User.findOne({firstName: req.body.recieverFirst, lastName: req.body.recieverLast})
         
     }).then((user)=>{
-        return Account.findOneAndUpdate({denovId: user._id, isMain: true},{"$inc": {"currentBalance": req.body.amount}});
+        return Fees.find({type: {$in: ["wiretransfer","transaction","eservice"]}})
+        .then((fees)=>{
+            const earnings = new Earning({
+                source:"Banking wiretransfer fees",
+                cost: _.sumBy(fees,'cost')
+            });
+            return earnings.save().then(()=>{
+                return Account.findOneAndUpdate({denovId: user._id, isMain: true},{"$inc": {"currentBalance": req.body.amount - _.sumBy(fees,'cost')}});
+            })  
+        })  
     })
     .then((account)=>{
         if(!account){
