@@ -28,12 +28,8 @@ const wiretransfer =mongoose.model('wiretransfer', new mongoose.Schema({
         required: true,
         default: Date.now()
     },
-    recieveId:{
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-    },
-    senderId:{
-        type: mongoose.Schema.Types.ObjectId,
+    accountId:{
+        type: mongoose.Types.objectId,
         required: true
     }
 }));
@@ -42,7 +38,8 @@ function validateWireTransfer(wiretransfer) {
     const schema = {
       recieverFirst: Joi.string().required(),
       recieverLast: Joi.string().required(),
-      amount: Joi.number().min(2000).required()
+      amount: Joi.number().min(2000).required(),
+      accountId: Joi.objectId().required()
     };
   
     return Joi.validate(wiretransfer, schema);
