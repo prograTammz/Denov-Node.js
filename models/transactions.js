@@ -43,5 +43,5 @@ function validateTransaction(transaction) {
     return Joi.validate(transaction, schema);
   }
   
-  exports.transaction = transaction; 
-  exports.validate = validateTransaction;
+  exports.Transaction = transaction; 
+  exports.validateTransaction = validateTransaction;
