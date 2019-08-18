@@ -23,11 +23,15 @@ router.put('/verify',(req,res)=>{
 
 })
 //user routes
-router.get('/',(req,res)=>{
 
-})
-router.put('/:id',(req,res)=>{
-    
+router.get('/',auth,(req,res)=>{
+    Transaction.find({denovId: req.user._id})
+        .then((transactions)=>{
+            res.send(transactions);
+        })
+        .catch((err)=>{
+            res.status(400).send(err);
+        })
 })
 router.post('/',auth,(req,res)=>{
     //checking is the provided body has an error
