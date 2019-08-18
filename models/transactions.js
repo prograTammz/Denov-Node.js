@@ -20,7 +20,7 @@ const transaction =mongoose.model('transaction', new mongoose.Schema({
     status:{
         type: String,
         required: true,
-        enum:['pending','handled','rejected'],
+        enum:['pending','handled','cancelled'],
         default: 'pending'
     },
     denovId:{
