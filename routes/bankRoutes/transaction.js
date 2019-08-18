@@ -51,8 +51,14 @@ router.post('/',auth,(req,res)=>{
             res.status(400).send(err);
         })
 })
-router.delete('/',(req,res)=>{
-
+router.delete('/:id',[auth,validateObjectId],(req,res)=>{
+    Transaction.findByIdAndDelete(req.params.id)
+        .then(()=>{
+            res.send()
+        })
+        .catch((err)=>{
+            res.status(400).send(err);
+        })
 })
 
 
