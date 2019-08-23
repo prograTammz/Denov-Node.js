@@ -8,8 +8,7 @@ const Room =mongoose.model('room', new mongoose.Schema({
         enum:['individual','casino']
     },
     isFixed:{
-        type: Boolean,
-        required: true
+        type: Boolean
     },
     bet:{
         type:Number,
@@ -22,9 +21,12 @@ const Room =mongoose.model('room', new mongoose.Schema({
     },
     expireDate:{
         type: Date,
+        required: true,
+        default: (Date.now() + 1000*3600*24)
     },
     count:{
         type: Number,
+        default: 0
     },
     budget:{
         type: Number,
@@ -35,5 +37,14 @@ const Room =mongoose.model('room', new mongoose.Schema({
     },
 }));
 
+function validateRoom(room) {
+    const schema = {
+        bet: Joi.number().min(100).max(5000).required(),
+        type: Joi.string().valid('individual','casino').required(),
+        creatorId: Joi.objectId().required()
+    };
   
+    return Joi.validate(room, schema);
+}  
   exports.Room = Room; 
+  exports.validateRoom = validateRoom;
