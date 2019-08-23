@@ -14,4 +14,19 @@ function chargeAccount(account,amount, reason){
         return err;
     })
 }
-exports.chargeRoulette = chargeRoulette;
+
+function fillAccount(account,amount,reason){
+    return Account.findOneAndUpdate({_id: account._id, isMain: true},{"$inc": {"currentBalance": amount}})
+    .then(()=>{
+        const earnings = new Earning({
+            source: reason,
+            cost: -amount
+        });
+        return earnings.save();
+    })
+    .catch((err)=>{
+        return err;
+    })
+}
+exports.fillAccount = fillAccount;
+exports.chargeAccount = chargeAccount;
