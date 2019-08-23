@@ -6,7 +6,7 @@ function chargeAccount(account,amount, reason){
     .then(()=>{
         const earnings = new Earning({
             source: reason,
-            cost: _.sumBy(fees,'cost')
+            cost: amount
         });
         return earnings.save();
     })
