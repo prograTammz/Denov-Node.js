@@ -5,6 +5,7 @@ const users = require('../routes/users');
 const auth = require('../routes/auth');
 const bank = require('../routes/bank');
 const news = require('../routes/news');
+const casino = require('../routes/casino');
 
 function Route(app){
     app.use(express.json({
@@ -15,6 +16,7 @@ function Route(app){
     app.use('/api/auth',auth);
     app.use('/api/bank',bank);
     app.use('/api/news',news);
+    app.use('/api/casino',casino);
 }
 
 module.exports = Route;
