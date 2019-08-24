@@ -1,5 +1,5 @@
 let Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi);
+
 const mongoose = require('mongoose');
 const RoomSession =mongoose.model('roomSession', new mongoose.Schema({
     isDone:{
