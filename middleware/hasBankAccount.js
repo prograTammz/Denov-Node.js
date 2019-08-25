@@ -1,4 +1,4 @@
-const {Account} = require('../../models/account');
+const {Account} = require('../models/account');
 module.exports = function (req, res, next) {
     Account.findOne({denovId: req.user, isMain: true})
     .then(account=>{

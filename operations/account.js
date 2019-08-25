@@ -1,5 +1,5 @@
-const {Earning} = require('../../models/earnings');
-const {Account} = require('../../models/account');
+const {Earning} = require('../models/earnings');
+const {Account} = require('../models/earnings');
 
 function chargeAccount(account,amount, reason){
     return Account.findOneAndUpdate({_id: account._id, isMain: true},{"$inc": {"currentBalance": -amount}})
