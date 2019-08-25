@@ -36,8 +36,14 @@ router.post('/room',[auth, isAdmin], (req,res)=>{
         res.status(400).send(err);
     })
 });
-router.delete('room',[auth, isAdmin], (req,res)=>{
-    
+router.delete('/room/:id',[auth, isAdmin], (req,res)=>{
+    Room.findByIdAndDelete(req.params.id)
+    .then(room=>{
+        res.send();
+    })
+    .catch(err=>{
+        res.status(400).send(err);
+    })
 });
 //joining
 router.post('/join/:id',[auth,hasBankAccount], (req,res)=>{
