@@ -13,7 +13,15 @@ const RoomSession = require('../../models/roomSession');
 
 //rooms routes
 router.get('/room',(req,res)=>{
-
+    let query = {};
+    query.sort = { bet: 1};
+    Room.find({},'count bet type isFixed _id',query)
+    .then(rooms=>{
+        res.send(rooms);
+    })
+    .catch(err=>{
+        res.status(400).send(err);
+    })
 });
 router.post('/room',[auth, isAdmin], (req,res)=>{
     const {error} = validateRoom(req.body);
