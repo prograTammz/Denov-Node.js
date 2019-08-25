@@ -1,4 +1,4 @@
-const express = require('express');
+    const express = require('express');
 const router = express.Router();
 //operations
 const {fillAccount,chargeAccount} = require('../../operations/account');
@@ -16,7 +16,25 @@ router.get('/room',(req,res)=>{
 
 });
 router.post('/room',[auth, isAdmin], (req,res)=>{
-
+    const {error} = validateRoom(req.body);
+    if (error){
+        res.status.send(error.details[0].message);
+    }
+    let room = new Room({
+        type: req.body.type,
+        bet: req.body.bet,
+        creatorId: req.user._id,
+        startDate: Date.now(),
+        expireDate: (Date.now() + 1000*3600*24),
+        isFixed: true
+    })
+    room.save()
+    .then(data=>{
+        res.send(data);
+    })
+    .catch(err=>{
+        res.status(400).send(err);
+    })
 });
 router.delete('room',[auth, isAdmin], (req,res)=>{
     
@@ -26,7 +44,7 @@ router.post('/join/:id',[auth,hasBankAccount], (req,res)=>{
 
 });
 router.post('/redeem',auth, (req,res)=>{
-    
+
 })
 
 module.exports = router;
