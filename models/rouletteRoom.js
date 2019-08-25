@@ -40,8 +40,7 @@ const Room =mongoose.model('room', new mongoose.Schema({
 function validateRoom(room) {
     const schema = {
         bet: Joi.number().min(100).max(5000).required(),
-        type: Joi.string().valid('individual','casino').required(),
-        creatorId: Joi.objectId().required()
+        type: Joi.string().valid('individual','casino').required()
     };
   
     return Joi.validate(room, schema);
