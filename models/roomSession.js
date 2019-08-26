@@ -1,5 +1,5 @@
 let Joi = require('joi');
-
+Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 const RoomSession =mongoose.model('roomSession', new mongoose.Schema({
     isDone:{
@@ -24,7 +24,8 @@ const RoomSession =mongoose.model('roomSession', new mongoose.Schema({
 })); 
     function validateJoin(roomSession){
         const schema = {
-            deposit: Joi.number().positive().required()
+            deposit: Joi.number().positive().required(),
+            roomId: Joi.objectId().required()
         }
         return Joi.validate(roomSession, schema);
     }   

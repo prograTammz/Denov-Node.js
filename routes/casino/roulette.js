@@ -55,7 +55,7 @@ router.delete('/room/:id',[auth, isAdmin], (req,res)=>{
     })
 });
 //joining
-router.post('/join/:id',[auth,hasBankAccount,validObjectId], (req,res)=>{
+router.post('/join',[auth,hasBankAccount], (req,res)=>{
 
     const {error} = validateJoin(req.body);
     if (error){
@@ -72,12 +72,12 @@ router.post('/join/:id',[auth,hasBankAccount,validObjectId], (req,res)=>{
         isDone: false,
         deposit: req.body.deposit,
         sessionStart: Date.now(),
-        roomId: req.params.id
+        roomId: req.body.roomId
     })
     
     chargeAccount(req.account, req.body.deposit, `Casino/roulette:: deposit ${session._id}`)
     .then(()=>{
-        return Room.findOneAndUpdate({_id: req.params.id}, {$inc: {count: 1}});
+        return Room.findOneAndUpdate({_id: req.body.roomId}, {$inc: {count: 1}});
     })
     .then(()=>{
         return session.save();
