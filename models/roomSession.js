@@ -18,5 +18,11 @@ const RoomSession =mongoose.model('roomSession', new mongoose.Schema({
         required: true
     }
 })); 
-
+    function validateJoin(roomSession){
+        const schema = {
+            deposit: Joi.number().positive().required()
+        }
+        return Joi.validate(roomSession, schema);
+    }   
   exports.RoomSession = RoomSession;
+  exports.validateJoin = validateJoin;
