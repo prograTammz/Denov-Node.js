@@ -1,5 +1,6 @@
     const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 //operations
 const {fillAccount,chargeAccount} = require('../../operations/account');
 //middleware
@@ -9,7 +10,7 @@ const validObjectId = require('../../middleware/validObjectId');
 const hasBankAccount = require('../../middleware/hasBankAccount');
 //datamodels
 const {Room,validateRoom} = require('../../models/rouletteRoom');
-const RoomSession = require('../../models/roomSession');
+const {RoomSession,validateJoin,validateRedeem} = require('../../models/roomSession');
 
 //rooms routes
 router.get('/room',(req,res)=>{
@@ -26,7 +27,7 @@ router.get('/room',(req,res)=>{
 router.post('/room',[auth, isAdmin], (req,res)=>{
     const {error} = validateRoom(req.body);
     if (error){
-        res.status.send(error.details[0].message);
+        res.status(400).send(error.details[0].message);
     }
     let room = new Room({
         type: req.body.type,
@@ -54,11 +55,36 @@ router.delete('/room/:id',[auth, isAdmin], (req,res)=>{
     })
 });
 //joining
-router.post('/join/:id',[auth,hasBankAccount], (req,res)=>{
+router.post('/join/:id',[auth,hasBankAccount,validObjectId], (req,res)=>{
 
+    const {error} = validateJoin(req.body);
+    if (error){
+        res.status(400).send(error.details[0].message);
+    }
+
+    session = new RoomSession({
+        isDone: false,
+        deposit: req.body.deposit,
+        sessionStart: Date.now()
+    })
+    chargeAccount(req.account, req.body.deposit, `Casino/roulette:: deposit ${session._id}`)
+    .then(()=>{
+        return Room.findOneAndUpdate({_id: req.params.id}, {$inc: {count: 1}});
+    })
+    .then(()=>{
+        return session.save();
+    })
+    .then(session=>{
+        let token = jwt.sign({session}, process.env.API_KEY);
+        res.send(token);
+    })
+    .catch(err=>{
+        res.status(400).send(err);
+    })
+
+    
 });
 router.post('/redeem',auth, (req,res)=>{
-
 })
 
 module.exports = router;
