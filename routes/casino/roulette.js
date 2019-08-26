@@ -28,6 +28,7 @@ router.post('/room',[auth, isAdmin], (req,res)=>{
     const {error} = validateRoom(req.body);
     if (error){
         res.status(400).send(error.details[0].message);
+        return;
     }
     let room = new Room({
         type: req.body.type,
