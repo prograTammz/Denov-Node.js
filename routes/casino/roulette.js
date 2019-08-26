@@ -60,17 +60,19 @@ router.post('/join/:id',[auth,hasBankAccount,validObjectId], (req,res)=>{
     const {error} = validateJoin(req.body);
     if (error){
         res.status(400).send(error.details[0].message);
+        return;
     }
 
     if(req.account.currentBalance < req.body.deposit){
         res.status(400).send("You don't have enough balance");
         return;
     } 
-    
+
     session = new RoomSession({
         isDone: false,
         deposit: req.body.deposit,
-        sessionStart: Date.now()
+        sessionStart: Date.now(),
+        roomId: req.params.id
     })
     
     chargeAccount(req.account, req.body.deposit, `Casino/roulette:: deposit ${session._id}`)
@@ -90,7 +92,26 @@ router.post('/join/:id',[auth,hasBankAccount,validObjectId], (req,res)=>{
 
     
 });
-router.post('/redeem',auth, (req,res)=>{
+router.post('/redeem',[auth,hasBankAccount], (req,res)=>{
+
+
+    let payload = jwt.verify(req.body.token, process.env.API_KEY);
+    RoomSession.findByIdAndUpdate(payload.session._id, {withdraw: payload.session.withdraw, isDone: true})
+    
+    .then(()=>{
+        return Room.findOneAndUpdate({_id: payload.session.roomId}, {$inc: {count: -1}});
+    })
+    .then(()=>{
+        fillAccount(req.account, payload.session.withdraw, `Casino/roulette:: withdraw ${payload.session._id}`)
+    })
+    .then(()=>{
+        res.send();
+    })
+    .catch(err=>{
+        res.status(400).send(err);
+    })
+
+
 })
 
 module.exports = router;
