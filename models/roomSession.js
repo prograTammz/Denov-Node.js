@@ -16,6 +16,10 @@ const RoomSession =mongoose.model('roomSession', new mongoose.Schema({
     sessionStart:{
         type: Date,
         required: true
+    },
+    roomId:{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
     }
 })); 
     function validateJoin(roomSession){
