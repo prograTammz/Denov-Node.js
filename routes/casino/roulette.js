@@ -62,11 +62,17 @@ router.post('/join/:id',[auth,hasBankAccount,validObjectId], (req,res)=>{
         res.status(400).send(error.details[0].message);
     }
 
+    if(req.account.currentBalance < req.body.deposit){
+        res.status(400).send("You don't have enough balance");
+        return;
+    } 
+    
     session = new RoomSession({
         isDone: false,
         deposit: req.body.deposit,
         sessionStart: Date.now()
     })
+    
     chargeAccount(req.account, req.body.deposit, `Casino/roulette:: deposit ${session._id}`)
     .then(()=>{
         return Room.findOneAndUpdate({_id: req.params.id}, {$inc: {count: 1}});
