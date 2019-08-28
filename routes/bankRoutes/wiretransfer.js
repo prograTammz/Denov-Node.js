@@ -32,7 +32,8 @@ router.post('/',auth,(req,res)=>{
         senderFirst: req.user.firstName,
         senderLast: req.user.lastName,
         amount: req.body.amount,
-        accountId: req.body.accountId
+        accountId: req.body.accountId,
+        date: Date.now()
     })
     //validate the sender's balance/account and the reciever's account
     Account.findById(req.body.accountId)
