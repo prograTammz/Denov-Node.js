@@ -19,7 +19,8 @@ router.post('/',auth, async (req,res)=>{
     let news = new News({
         title: req.body.title,
         body: req.body.body,
-        author: `${user.firstName} ${user.lastName}` 
+        author: `${user.firstName} ${user.lastName}`,
+        date: Date.now()
     });
     news.save().then((news)=>{
         res.send(news);
