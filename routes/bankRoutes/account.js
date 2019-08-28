@@ -109,7 +109,8 @@ router.post('/',auth,(req,res)=>{
             updateDays: plan.updateDays,
             breakFees: plan.breakFees,
             deduceRate: plan.deduceRate,
-            interest: plan.interest
+            interest: plan.interest,
+            creationDate: Date.now()
         })
         account.save().then((data)=>{
             res.send(data);
