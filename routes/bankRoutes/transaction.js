@@ -44,7 +44,8 @@ router.post('/',auth,(req,res)=>{
         amount: req.body.amount,
         type: req.body.type,
         bankAccountId: req.body.bankAccountId,
-        denovId: req.user._id
+        denovId: req.user._id,
+        date: Date.now()
     })
     //saving the transaction to the DB
     transaction.save()
